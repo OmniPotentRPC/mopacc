@@ -1,0 +1,5 @@
+option('with_tests', type: 'boolean', value: true, description: 'Build ABI tests')
+option('with_mopac', type: 'boolean', value: false,
+       description: 'Link the real OpenMOPAC embed (libmopac)')
+option('mopac_root', type: 'string', value: '',
+       description: 'Prefix with include/mopac.h and lib/libmopac.so')

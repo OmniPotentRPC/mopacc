@@ -1,0 +1,7 @@
+/build/
+/build-*/
+/.cache/
+*.so
+*.o
+/subprojects/*/
+!/subprojects/*.wrap
