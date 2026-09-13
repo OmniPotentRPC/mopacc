@@ -7,6 +7,8 @@ project(
 )
 
 cc = meson.get_compiler('c')
+python = find_program('python3')
+pkgconfig = import('pkgconfig')
 inc = include_directories('include')
 math_dep = cc.find_library('m', required: false)
 
@@ -70,6 +72,14 @@ mopacc_dep = declare_dependency(
 )
 
 install_headers('include/mopacc.h')
+
+pkg = import('pkgconfig')
+pkg.generate(
+  libmopacc,
+  name: 'mopacc',
+  description: 'C ABI for OpenMOPAC AM1 (mopac_scf, model 4)',
+  version: meson.project_version(),
+)
 
 if get_option('with_tests')
   test_stub = executable(

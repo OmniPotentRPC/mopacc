@@ -31,6 +31,14 @@ int main(void) {
     fprintf(stderr, "stub must not report ok\n");
     return 1;
   }
+  if (mopacc_energy(3, pos, z, NULL, 0).ok) {
+    fprintf(stderr, "stub energy must not report ok\n");
+    return 1;
+  }
+  if (mopacc_energy_forces(3, pos, z, NULL, 0, g).ok) {
+    fprintf(stderr, "stub energy_forces must not report ok\n");
+    return 1;
+  }
   if (mopacc_set_params(NULL, 0) == 0) {
     fprintf(stderr, "stub set_params must fail\n");
     return 1;
@@ -39,5 +47,19 @@ int main(void) {
     fprintf(stderr, "stub session_create must fail\n");
     return 1;
   }
+  if (mopacc_session_set_params(NULL, NULL, 0) == 0) {
+    fprintf(stderr, "stub session_set_params must fail\n");
+    return 1;
+  }
+  if (mopacc_session_energy_gradient(NULL, 3, pos, z, g).ok) {
+    fprintf(stderr, "stub session_energy_gradient must not report ok\n");
+    return 1;
+  }
+  mopacc_session_destroy(NULL);
+  if (mopacc_last_error() == NULL || mopacc_last_error()[0] == '\0') {
+    fprintf(stderr, "stub last_error should explain the missing embed\n");
+    return 1;
+  }
+  mopacc_finalize();
   return 0;
 }
