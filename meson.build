@@ -81,6 +81,26 @@ if get_option('with_tests')
   )
   test('stub_abi', test_stub)
 
+  test_energy_gradient = executable(
+    'test_mopacc_energy_gradient',
+    'tests/test_mopacc_energy_gradient.c',
+    include_directories: inc,
+    link_with: libmopacc,
+    dependencies: [math_dep],
+    c_args: common_c_args,
+  )
+  test('energy_gradient', test_energy_gradient)
+
+  test_session = executable(
+    'test_mopacc_session',
+    'tests/test_mopacc_session.c',
+    include_directories: inc,
+    link_with: libmopacc,
+    dependencies: [math_dep],
+    c_args: common_c_args,
+  )
+  test('session', test_session)
+
   host_hcn = executable(
     'host_hcn_am1',
     'examples/host_hcn_am1.c',
