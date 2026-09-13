@@ -3,7 +3,7 @@
 Split rgpot engine for OpenMOPAC `libmopac.so`. Same shape as
 [nwchemc](https://github.com/OmniPotentRPC/nwchemc) and
 [cpmdc](https://github.com/OmniPotentRPC/cpmdc): rgpot dlopens
-`libmopacc.so`; this tree owns the C ABI.
+`libmopacc.so`; this tree is the C ABI.
 
 This is the OpenMOPAC potential surface: every `mopac_system.model`
 (PM7, PM6-D3H4, PM6-ORG, PM6, AM1, RM1), COSMO, lattice, SCF, geometry
