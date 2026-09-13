@@ -64,6 +64,7 @@ libmopacc = library(
   c_args: common_c_args,
   install: true,
   version: meson.project_version(),
+  soversion: '1',
 )
 
 mopacc_dep = declare_dependency(
@@ -71,14 +72,14 @@ mopacc_dep = declare_dependency(
   include_directories: inc,
 )
 
-install_headers('include/mopacc.h')
-
-pkg = import('pkgconfig')
-pkg.generate(
-  libmopacc,
+install_headers('include/mopacc.h', subdir: 'mopacc')
+pkgconfig.generate(
   name: 'mopacc',
-  description: 'C ABI for OpenMOPAC AM1 (mopac_scf, model 4)',
+  filebase: 'mopacc',
+  libraries: libmopacc,
+  subdirs: 'mopacc',
   version: meson.project_version(),
+  description: 'Stable C ABI for embedding OpenMOPAC AM1',
 )
 
 if get_option('with_tests')
@@ -118,4 +119,43 @@ if get_option('with_tests')
     link_with: libmopacc,
     c_args: common_c_args,
   )
+
+  test(
+    'readme-abi-surface',
+    python,
+    args: [meson.current_source_dir() / 'tests/test_readme_abi_surface.py'],
+    suite: ['docs', 'packaging'],
+  )
+  test(
+    'meson-install-contract',
+    python,
+    args: [meson.current_source_dir() / 'tests/test_meson_install_contract.py'],
+    suite: ['packaging'],
+  )
+  meson_prog = find_program('meson', required: false)
+  pkg_config_prog = find_program('pkg-config', 'pkgconf', required: false)
+  if meson_prog.found() and pkg_config_prog.found()
+    test(
+      'mopacc-installed-pkgconfig-consumer',
+      python,
+      args: [
+        meson.current_source_dir() / 'tests/test_installed_pkgconfig_consumer.py',
+        '--source-dir',
+        meson.current_source_dir(),
+        '--build-root',
+        meson.current_build_dir() / 'installed-pkgconfig-consumer',
+        '--install-prefix',
+        meson.current_build_dir() / 'installed-pkgconfig-consumer-prefix',
+        '--meson',
+        meson_prog.full_path(),
+        '--cc',
+        cc.cmd_array().length() > 1 ? cc.cmd_array()[1] : cc.cmd_array()[0],
+        '--pkg-config',
+        pkg_config_prog.full_path(),
+      ],
+      is_parallel: false,
+      timeout: 240,
+      suite: ['packaging'],
+    )
+  endif
 endif

@@ -15,6 +15,7 @@ RGPOT_GUIDE = Path(
 DECL_RE = re.compile(
     r"""
     (?:^|\n)\s*
+    (?:RGPOT_MOPACC_API\s+)?
     (?:
       MopacCResult\s+|
       MopacCSession\s+\*\s*|

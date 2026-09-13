@@ -20,7 +20,7 @@
 #include <stddef.h>
 
 #define RGPOT_MOPACC_C_ABI_VERSION 1
-#define MOPACC_ABI_VERSION 1
+#define MOPACC_ABI_VERSION 1 /* matches shared-library soversion 1 */
 
 #ifdef __cplusplus
 extern "C" {

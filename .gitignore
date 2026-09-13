@@ -1,7 +1,11 @@
 /build/
 /build-*/
 /.cache/
+.pixi/
+__pycache__/
+*.pyc
 *.so
+*.so.*
 *.o
 /subprojects/*/
 !/subprojects/*.wrap

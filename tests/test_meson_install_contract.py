@@ -101,9 +101,9 @@ class MesonInstallContractTest(unittest.TestCase):
         ]
         missing = [term for term in required_terms if term not in pixi]
         self.assertEqual(missing, [])
-        default, _, feature = pixi.partition("[feature.mopac]")
         self.assertIn("[feature.mopac]", pixi)
-        self.assertNotIn("mopac =", default)
+        deps = pixi.split("[dependencies]", 1)[1].split("[feature.mopac]", 1)[0]
+        self.assertNotRegex(deps, r"(?m)^mopac\s*=")
 
     def test_docs_explain_installed_pkgconfig_and_packed_params(self):
         docs = README.read_text(encoding="utf-8") + "\n" + RGPOT_GUIDE.read_text(
