@@ -1,7 +1,7 @@
 [workspace]
 authors = ["Rohit Goswami <rgoswami@ieee.org>"]
 channels = ["conda-forge"]
-description = "C ABI for embedding OpenMOPAC AM1 (mopac_scf model=4)."
+description = "C ABI for embedding OpenMOPAC (mopac_scf / relax / vibe)."
 name = "mopacc"
 platforms = ["linux-64", "osx-64", "osx-arm64"]
 version = "0.1.0"
@@ -29,4 +29,4 @@ mopac = ">=23.2,<24"
 
 [feature.mopac.tasks.test-mopac]
 cmd = "meson setup build-mopac -Dwith_tests=true -Dwith_mopac=true -Dmopac_root=$CONDA_PREFIX && meson compile -C build-mopac && meson test -C build-mopac --print-errorlogs && ./build-mopac/host_hcn_am1"
-description = "Real OpenMOPAC AM1 embed (mopac_scf model=4)"
+description = "Real OpenMOPAC embed (mopac_scf / relax / vibe)"

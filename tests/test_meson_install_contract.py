@@ -45,7 +45,7 @@ class MesonInstallContractTest(unittest.TestCase):
                 r"libraries:\s*libmopacc\s*,.*"
                 r"subdirs:\s*'mopacc'\s*,.*"
                 r"version:\s*meson\.project_version\(\)\s*,.*"
-                r"description:\s*'Stable C ABI for embedding OpenMOPAC AM1'"
+                r"description:\s*'Stable C ABI for embedding OpenMOPAC'"
                 r"\s*,?\s*\)",
                 re.S,
             ),

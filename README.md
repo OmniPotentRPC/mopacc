@@ -1,32 +1,39 @@
 # mopacc
 
-Split rgpot engine for **AM1** via OpenMOPAC `libmopac.so`. Same shape as
+Split rgpot engine for OpenMOPAC `libmopac.so`. Same shape as
 [nwchemc](https://github.com/OmniPotentRPC/nwchemc) and
 [cpmdc](https://github.com/OmniPotentRPC/cpmdc): rgpot dlopens
 `libmopacc.so`; this tree owns the C ABI.
 
-AM1 is not an NWChem or CPMD Hamiltonian. Do not grow those engines.
-XTB in rgpot is GFN, not AM1. Do not wrap the `mopac` executable.
+This is the OpenMOPAC potential surface: every `mopac_system.model`
+(PM7, PM6-D3H4, PM6-ORG, PM6, AM1, RM1), COSMO, lattice, SCF, geometry
+relax, and vibrational evaluation, conventional or MOZYME. Omitted
+params default the Hamiltonian to AM1. Do not grow NWChem or CPMD for
+this. Do not wrap the `mopac` executable.
 
 See [docs/rgpot-integration.md](docs/rgpot-integration.md) for the packed
-`MopacCParams` contract, Hartree / Hartree/Bohr units, and
-`MOPACC_LIBRARY` / `RGPOT_MOPACC_ENGINE` discovery. Params are **not Cap'n
-Proto**.
+`MopacCParams` contract, units, and `MOPACC_LIBRARY` /
+`RGPOT_MOPACC_ENGINE` discovery. Params are **not Cap'n Proto**.
 
 ## Backend
 
 | mopacc | OpenMOPAC (`mopac.h`, 23.x) |
 | --- | --- |
-| default Hamiltonian | `mopac_system.model = 4` (AM1) |
-| energy + gradient | `mopac_scf` |
-| session density | `mopac_state` reused across calls |
-| free properties | `destroy_mopac_properties` |
+| models | `mopac_system.model` 0–5 (default AM1) |
+| SCF | `mopac_scf` / `mozyme_scf` |
+| relax | `mopac_relax` / `mozyme_relax` |
+| frequencies | `mopac_vibe` / `mozyme_vibe` |
+| cell | `nlattice`, lattice vectors, pressure |
+| solvent | COSMO `epsilon` (vacuum when 1) |
+| session density | `mopac_state` / `mozyme_state` |
+| properties | heat, gradient, dipole, charges, stress, freq |
 
 ABI units: Angstrom in, Hartree and Hartree/Bohr out. Converted from
 `mopac_properties.heat` (kcal/mol) and `coord_deriv` (kcal/mol/A).
+Dipole is Debye. Stress is GPa Voigt.
 
-Params are a packed `MopacCParams` (charge, spin, model, tolerance,
-max_time). NULL / size 0 is AM1, charge 0, closed shell, vacuum.
+Params are a packed `MopacCParams`. NULL / size 0 is charge 0, closed
+shell, vacuum, conventional solver, AM1.
 
 The public ABI does not expose C++ or Rust types:
 
@@ -49,6 +56,28 @@ int mopacc_session_set_params(MopacCSession *session, const void *params,
 MopacCResult mopacc_session_energy_gradient(
     MopacCSession *session, int n_atoms, const double *positions_ang,
     const int *atomic_numbers, double *grad_h_bohr);
+int mopacc_set_cell(const double *lattice_ang, int nlattice,
+                    int nlattice_move, double pressure_gpa);
+int mopacc_session_set_cell(MopacCSession *session,
+                            const double *lattice_ang, int nlattice,
+                            int nlattice_move, double pressure_gpa);
+MopacCResult mopacc_relax(
+    int n_atoms, const double *positions_ang, const int *atomic_numbers,
+    const void *params, size_t params_size_bytes, double *coord_update_ang,
+    double *grad_h_bohr);
+MopacCResult mopacc_vibe(
+    int n_atoms, const double *positions_ang, const int *atomic_numbers,
+    const void *params, size_t params_size_bytes, double *freq_cm,
+    double *disp);
+MopacCResult mopacc_session_relax(
+    MopacCSession *session, int n_atoms, const double *positions_ang,
+    const int *atomic_numbers, double *coord_update_ang, double *grad_h_bohr);
+MopacCResult mopacc_session_vibe(
+    MopacCSession *session, int n_atoms, const double *positions_ang,
+    const int *atomic_numbers, double *freq_cm, double *disp);
+int mopacc_last_charges(int n_atoms, double *charges);
+int mopacc_session_charges(const MopacCSession *session, int n_atoms,
+                           double *charges);
 const char *mopacc_version(void);
 int mopacc_c_abi_version(void);
 int mopacc_abi_version(void);

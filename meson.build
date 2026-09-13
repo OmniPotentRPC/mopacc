@@ -79,7 +79,7 @@ pkgconfig.generate(
   libraries: libmopacc,
   subdirs: 'mopacc',
   version: meson.project_version(),
-  description: 'Stable C ABI for embedding OpenMOPAC AM1',
+  description: 'Stable C ABI for embedding OpenMOPAC',
 )
 
 if get_option('with_tests')

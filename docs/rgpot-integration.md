@@ -1,11 +1,13 @@
 # rgpot integration guide
 
-This is the C ABI contract rgpot should wire against for the OpenMOPAC AM1
+This is the C ABI contract rgpot should wire against for the OpenMOPAC
 backend. The stable boundary is a packed `MopacCParams` blob, not Cap'n Proto
 and not a MOPAC input deck.
 
-AM1 is the default Hamiltonian (`mopac_system.model = 4` / `mopac_scf`).
-Do not grow an NWChem or CPMD engine for this path.
+Every OpenMOPAC model and the potential-facing entry points (SCF, relax,
+vibe; conventional or MOZYME) live here. Omitted params default the
+Hamiltonian to AM1 (`model=4`). Do not grow an NWChem or CPMD engine
+for this path.
 
 ## Wiring stage
 
@@ -14,7 +16,8 @@ directly:
 
 1. Discover the library through `MOPACC_LIBRARY` or `RGPOT_MOPACC_ENGINE`.
 2. Confirm `mopacc_available()` and `mopacc_c_abi_version()`.
-3. Pass method knobs as a packed `MopacCParams` (charge, spin, `model=4` AM1).
+3. Pass method knobs as a packed `MopacCParams` (charge, spin, model,
+   COSMO epsilon, solver). Omitted blob: AM1 vacuum.
 4. Call `mopacc_energy_gradient()` for a one-shot step, or keep a
    `MopacCSession` for repeated geometries.
 
@@ -28,19 +31,20 @@ Use this as the merge/pr decision point:
 
 ## Params
 
-`MopacCParams` is a POD copied by size. NULL / size 0 means AM1, charge 0,
-closed shell, vacuum.
+`MopacCParams` is a POD copied by size. NULL / size 0 means charge 0,
+closed shell, vacuum, conventional solver, AM1.
 
 | Field | Meaning |
 | --- | --- |
 | `charge` | net charge |
 | `spin` | OpenMOPAC spin excitations |
-| `model` | `4` = AM1 (`MOPACC_MODEL_AM1`) |
+| `model` | 0 PM7 … 5 RM1; omitted blob defaults to AM1 (`model=4`) |
 | `tolerance` | GNORM/RELSCF scale; `1.0` is the OpenMOPAC default |
 | `max_time` | seconds; `0` uses 3600 |
+| `epsilon` | COSMO dielectric; `1.0` vacuum. Must be 1 with a cell |
+| `solver` | 0 conventional, 1 MOZYME |
 
-A zeroed struct still means AM1 only when the caller writes `model=4`. Do not
-treat `model=0` as AM1 once a full blob is supplied (`0` is PM7 in OpenMOPAC).
+A full blob with `model=0` is PM7. Do not treat a written `0` as AM1.
 
 ```c
 MopacCParams params = {
