@@ -8,7 +8,7 @@
 #include <string.h>
 
 #ifndef MOPACC_VERSION_STRING
-#define MOPACC_VERSION_STRING "0.1.0"
+#define MOPACC_VERSION_STRING "0.2.0"
 #endif
 
 /* CODATA 2018. OpenMOPAC heat is kcal/mol; coord_deriv is kcal/mol/A. */

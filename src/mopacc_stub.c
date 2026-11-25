@@ -4,7 +4,7 @@
 #include <string.h>
 
 #ifndef MOPACC_VERSION_STRING
-#define MOPACC_VERSION_STRING "mopacc-stub/0.1.0"
+#define MOPACC_VERSION_STRING "mopacc-stub/0.2.0"
 #endif
 
 static _Thread_local char g_last_error[512] =

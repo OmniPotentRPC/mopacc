@@ -4,7 +4,7 @@ channels = ["conda-forge"]
 description = "C ABI for embedding OpenMOPAC (mopac_scf / relax / vibe)."
 name = "mopacc"
 platforms = ["linux-64", "osx-64", "osx-arm64"]
-version = "0.1.0"
+version = "0.2.0"
 
 [environments]
 mopac = { features = ["mopac"] }
