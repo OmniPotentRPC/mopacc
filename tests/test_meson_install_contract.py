@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import json
 import re
 import unittest
 from pathlib import Path
@@ -6,6 +7,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MESON = ROOT / "meson.build"
+CITATION = ROOT / "CITATION.cff"
+CODEMETA = ROOT / "codemeta.json"
+ZENODO = ROOT / ".zenodo.json"
 HEADER = ROOT / "include" / "mopacc.h"
 README = ROOT / "README.md"
 RGPOT_GUIDE = ROOT / "docs" / "rgpot-integration.md"
@@ -66,6 +70,18 @@ class MesonInstallContractTest(unittest.TestCase):
         self.assertRegex(
             pixi, r'(?m)^version = "%s"$' % re.escape(version.group(1))
         )
+
+    def test_citation_metadata_tracks_project_version(self):
+        project = re.search(r"project\((.*?)\n\)", self.text, re.S)
+        version = re.search(r"version:\s*'([^']+)'", project.group(1)).group(1)
+        citation = CITATION.read_text(encoding="utf-8")
+        self.assertRegex(
+            citation, r'(?m)^version: "%s"$' % re.escape(version)
+        )
+        codemeta = json.loads(CODEMETA.read_text(encoding="utf-8"))
+        zenodo = json.loads(ZENODO.read_text(encoding="utf-8"))
+        self.assertEqual(codemeta["version"], version)
+        self.assertEqual(zenodo["version"], version)
 
     def test_stub_and_real_embed_stay_behind_with_mopac(self):
         self.assertIn("get_option('with_mopac')", self.text)

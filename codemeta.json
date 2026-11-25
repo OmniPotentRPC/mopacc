@@ -1,0 +1,35 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "mopacc",
+  "description": "Split rgpot engine for OpenMOPAC libmopac.so. Same shape as nwchemc and cpmdc: rgpot dlopens libmopacc.so; this tree is the C ABI.",
+  "version": "0.2.0",
+  "datePublished": "2026-11-25",
+  "license": "https://spdx.org/licenses/MIT",
+  "codeRepository": "https://github.com/OmniPotentRPC/mopacc",
+  "issueTracker": "https://github.com/OmniPotentRPC/mopacc/issues",
+  "programmingLanguage": "C",
+  "referencePublication": "https://doi.org/10.21105/joss.08025",
+  "author": [
+    {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-2393-8056",
+      "givenName": "Rohit",
+      "familyName": "Goswami",
+      "email": "rgoswami@ieee.org",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "TurtleTech ehf"
+      }
+    }
+  ],
+  "keywords": [
+    "OpenMOPAC",
+    "MOPAC",
+    "semiempirical",
+    "AM1",
+    "PM7",
+    "rgpot",
+    "C ABI"
+  ]
+}
