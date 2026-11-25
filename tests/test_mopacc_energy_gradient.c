@@ -13,19 +13,21 @@ static const double POS[9] = {
 
 int main(void) {
   double grad[9];
-  MopacCParams p;
+  MopacCParams p = {
+      .charge = 0,
+      .spin = 0,
+      .model = MOPACC_MODEL_AM1,
+      .tolerance = 1.0,
+      .max_time = 120,
+      .epsilon = 1.0,
+      .solver = MOPACC_SOLVER_MOPAC,
+  };
   MopacCResult r;
   int i;
 
   if (!mopacc_available()) {
     return 0;
   }
-
-  p.charge = 0;
-  p.spin = 0;
-  p.model = MOPACC_MODEL_AM1;
-  p.tolerance = 1.0;
-  p.max_time = 120;
 
   for (i = 0; i < 9; ++i) {
     grad[i] = 0.0;

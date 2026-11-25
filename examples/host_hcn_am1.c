@@ -12,7 +12,15 @@ static const double POS[9] = {
 
 int main(void) {
   double grad[9];
-  MopacCParams p;
+  MopacCParams p = {
+      .charge = 0,
+      .spin = 0,
+      .model = MOPACC_MODEL_AM1,
+      .tolerance = 1.0,
+      .max_time = 120,
+      .epsilon = 1.0,
+      .solver = MOPACC_SOLVER_MOPAC,
+  };
   MopacCResult r;
   int i;
 
@@ -20,12 +28,6 @@ int main(void) {
     fprintf(stderr, "mopacc stub: libmopac not linked\n");
     return 2;
   }
-
-  p.charge = 0;
-  p.spin = 0;
-  p.model = MOPACC_MODEL_AM1;
-  p.tolerance = 1.0;
-  p.max_time = 120;
 
   r = mopacc_energy_gradient(3, POS, Z, &p, sizeof(p), grad);
   printf("ok=%d energy_h=%.10f msg=%s\n", r.ok, r.energy_h, r.message);
