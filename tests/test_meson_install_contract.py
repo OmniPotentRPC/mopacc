@@ -81,7 +81,7 @@ class MesonInstallContractTest(unittest.TestCase):
         codemeta = json.loads(CODEMETA.read_text(encoding="utf-8"))
         zenodo = json.loads(ZENODO.read_text(encoding="utf-8"))
         self.assertEqual(codemeta["version"], version)
-        self.assertEqual(zenodo["version"], version)
+        self.assertNotIn("version", zenodo)
 
     def test_stub_and_real_embed_stay_behind_with_mopac(self):
         self.assertIn("get_option('with_mopac')", self.text)

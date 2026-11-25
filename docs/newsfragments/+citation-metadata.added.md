@@ -1,1 +1,1 @@
-Ship `CITATION.cff`, `codemeta.json` and `.zenodo.json` citation metadata, held at the project version by the `meson-install-contract` test.
+Ship `CITATION.cff`, `codemeta.json` and `.zenodo.json` citation metadata, crediting the OpenMOPAC JOSS paper upstream. The `meson-install-contract` test holds `CITATION.cff` and `codemeta.json` at the project version and keeps `version` out of `.zenodo.json`, which the Zenodo legacy deposit schema rejects.
