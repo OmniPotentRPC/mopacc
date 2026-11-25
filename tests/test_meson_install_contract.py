@@ -51,8 +51,8 @@ class MesonInstallContractTest(unittest.TestCase):
             ),
         )
 
-    def test_shared_library_soversion_is_abi_one(self):
-        self.assertRegex(self.text, r"soversion:\s*'1'")
+    def test_shared_library_soversion_is_abi_two(self):
+        self.assertRegex(self.text, r"soversion:\s*'2'")
 
     def test_stub_and_real_embed_stay_behind_with_mopac(self):
         self.assertIn("get_option('with_mopac')", self.text)

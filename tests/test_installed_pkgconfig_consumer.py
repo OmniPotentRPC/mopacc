@@ -34,6 +34,11 @@ int main(void) {
     fprintf(stderr, "ABI version mismatch\n");
     return 1;
   }
+  if (mopacc_result_size() != sizeof(MopacCResult) ||
+      mopacc_params_size() != sizeof(MopacCParams)) {
+    fprintf(stderr, "struct size mismatch\n");
+    return 1;
+  }
 
   int available = mopacc_available();
   double pos[9] = {0.0};
@@ -147,9 +152,9 @@ def main() -> int:
     run([args.meson, "compile", "-C", inner_build])
     run([args.meson, "install", "-C", inner_build])
 
-    so_links = list(prefix.rglob("libmopacc.so.1"))
+    so_links = list(prefix.rglob("libmopacc.so.2"))
     if not so_links:
-        raise SystemExit("libmopacc.so.1 not installed (soversion 1)")
+        raise SystemExit("libmopacc.so.2 not installed (soversion 2)")
     if not list(prefix.rglob("mopacc.h")):
         raise SystemExit("mopacc.h not installed")
     if not list(prefix.rglob("mopacc.pc")):

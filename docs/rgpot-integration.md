@@ -15,7 +15,10 @@ rgpot dlopens the installed `libmopacc.so` and calls the packed-params ABI
 directly:
 
 1. Discover the library through `MOPACC_LIBRARY` or `RGPOT_MOPACC_ENGINE`.
-2. Confirm `mopacc_available()` and `mopacc_c_abi_version()`.
+2. Confirm `mopacc_available()`, `mopacc_c_abi_version() >= 2`, and that
+   `mopacc_result_size()` / `mopacc_params_size()` equal the caller's
+   `sizeof(MopacCResult)` / `sizeof(MopacCParams)`. Refuse the library
+   before any compute call otherwise.
 3. Pass method knobs as a packed `MopacCParams` (charge, spin, model,
    COSMO epsilon, solver). Omitted blob: AM1 vacuum.
 4. Call `mopacc_energy_gradient()` for a one-shot step, or keep a
@@ -95,6 +98,20 @@ Required symbols after dlopen:
 - `mopacc_available`
 - `mopacc_set_params`
 - `mopacc_c_abi_version`
+- `mopacc_result_size`
+- `mopacc_params_size`
+
+## ABI versions
+
+| ABI | soversion | Change |
+| --- | --- | --- |
+| 1 | 1 | initial `MopacCParams` / `MopacCResult` |
+| 2 | 2 | `epsilon`, `solver`, `dipole_debye`, `stress_gpa`; size queries |
+
+ABI 1 and ABI 2 export the same compute symbols, so a frontend cannot
+tell them apart by symbol lookup alone. `mopacc_result_size` and
+`mopacc_params_size` are absent in ABI 1; treat their absence as
+incompatible.
 
 ## Stub vs real embed
 

@@ -182,6 +182,8 @@ int mopacc_session_charges(const MopacCSession *session, int n_atoms,
 const char *mopacc_version(void) { return MOPACC_VERSION_STRING; }
 int mopacc_c_abi_version(void) { return RGPOT_MOPACC_C_ABI_VERSION; }
 int mopacc_abi_version(void) { return MOPACC_ABI_VERSION; }
+size_t mopacc_result_size(void) { return sizeof(MopacCResult); }
+size_t mopacc_params_size(void) { return sizeof(MopacCParams); }
 int mopacc_available(void) { return 0; }
 const char *mopacc_last_error(void) { return g_last_error; }
 void mopacc_finalize(void) {}

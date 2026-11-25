@@ -81,6 +81,8 @@ int mopacc_session_charges(const MopacCSession *session, int n_atoms,
 const char *mopacc_version(void);
 int mopacc_c_abi_version(void);
 int mopacc_abi_version(void);
+size_t mopacc_result_size(void);
+size_t mopacc_params_size(void);
 int mopacc_available(void);
 const char *mopacc_last_error(void);
 void mopacc_finalize(void);
@@ -98,7 +100,7 @@ meson test -C build
 
 With Pixi, the same stub packaging check is `pixi run test-stub`.
 
-Install header + `mopacc.pc` (`soversion` 1):
+Install header + `mopacc.pc` (`soversion` 2):
 
 ```
 meson setup build --prefix "$PWD/prefix"
@@ -121,7 +123,8 @@ Env: `MOPACC_LIBRARY` / `RGPOT_MOPACC_ENGINE` once an rgpot frontend
 dlopens this `.so`. Required symbols: `mopacc_set_params`,
 `mopacc_energy_gradient`, `mopacc_session_create`, `mopacc_session_destroy`,
 `mopacc_session_set_params`, `mopacc_session_energy_gradient`,
-`mopacc_available`, `mopacc_c_abi_version`.
+`mopacc_available`, `mopacc_c_abi_version`, `mopacc_result_size`,
+`mopacc_params_size`.
 
 ## License
 

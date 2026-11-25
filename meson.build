@@ -64,7 +64,7 @@ libmopacc = library(
   c_args: common_c_args,
   install: true,
   version: meson.project_version(),
-  soversion: '1',
+  soversion: '2',
 )
 
 mopacc_dep = declare_dependency(
