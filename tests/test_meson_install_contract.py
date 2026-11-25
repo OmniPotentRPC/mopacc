@@ -51,8 +51,19 @@ class MesonInstallContractTest(unittest.TestCase):
             ),
         )
 
-    def test_shared_library_soversion_is_abi_one(self):
-        self.assertRegex(self.text, r"soversion:\s*'1'")
+    def test_shared_library_soversion_is_abi_two(self):
+        self.assertRegex(self.text, r"soversion:\s*'2'")
+
+    def test_project_version_tracks_abi_two_and_pixi(self):
+        project = re.search(r"project\((.*?)\n\)", self.text, re.S)
+        self.assertIsNotNone(project)
+        version = re.search(r"version:\s*'([^']+)'", project.group(1))
+        self.assertIsNotNone(version)
+        self.assertEqual(version.group(1), "0.2.0")
+        pixi = PIXI.read_text(encoding="utf-8")
+        self.assertRegex(
+            pixi, r'(?m)^version = "%s"$' % re.escape(version.group(1))
+        )
 
     def test_stub_and_real_embed_stay_behind_with_mopac(self):
         self.assertIn("get_option('with_mopac')", self.text)
@@ -77,6 +88,9 @@ class MesonInstallContractTest(unittest.TestCase):
             "mopacc_session_set_params",
             "mopacc_session_energy_gradient",
             "mopacc_available",
+            "mopacc_c_abi_version",
+            "mopacc_result_size",
+            "mopacc_params_size",
             "pkg-config",
             "--cflags",
             "--libs",
@@ -122,6 +136,11 @@ class MesonInstallContractTest(unittest.TestCase):
         ]
         missing = [term for term in required_terms if term not in docs]
         self.assertEqual(missing, [])
+
+    def test_rgpot_guide_requires_exact_abi(self):
+        guide = RGPOT_GUIDE.read_text(encoding="utf-8")
+        self.assertIn("`mopacc_c_abi_version() == 2`", guide)
+        self.assertNotRegex(guide, r"mopacc_c_abi_version\(\)\s*>=")
 
 
 if __name__ == "__main__":

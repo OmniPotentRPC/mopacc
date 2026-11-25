@@ -20,6 +20,7 @@ DECL_RE = re.compile(
       MopacCResult\s+|
       MopacCSession\s+\*\s*|
       const\s+char\s+\*\s*|
+      size_t\s+|
       int\s+|
       void\s+
     )
@@ -35,6 +36,9 @@ REQUIRED_SURFACE = (
     "mopacc_session_set_params",
     "mopacc_session_energy_gradient",
     "mopacc_available",
+    "mopacc_c_abi_version",
+    "mopacc_result_size",
+    "mopacc_params_size",
 )
 
 

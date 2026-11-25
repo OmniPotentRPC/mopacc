@@ -12,6 +12,20 @@ int main(void) {
     fprintf(stderr, "abi version mismatch\n");
     return 1;
   }
+  if (RGPOT_MOPACC_C_ABI_VERSION < 2 || MOPACC_ABI_VERSION < 2) {
+    fprintf(stderr, "struct layout change requires ABI >= 2\n");
+    return 1;
+  }
+  if (mopacc_result_size() != sizeof(MopacCResult)) {
+    fprintf(stderr, "result size %zu != %zu\n", mopacc_result_size(),
+            sizeof(MopacCResult));
+    return 1;
+  }
+  if (mopacc_params_size() != sizeof(MopacCParams)) {
+    fprintf(stderr, "params size %zu != %zu\n", mopacc_params_size(),
+            sizeof(MopacCParams));
+    return 1;
+  }
   if (mopacc_version() == NULL || mopacc_version()[0] == '\0') {
     fprintf(stderr, "empty version\n");
     return 1;

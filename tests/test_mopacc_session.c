@@ -32,7 +32,15 @@ static int check_result(const char *label, MopacCResult r, const double *grad) {
 }
 
 int main(void) {
-  MopacCParams p;
+  MopacCParams p = {
+      .charge = 0,
+      .spin = 0,
+      .model = MOPACC_MODEL_AM1,
+      .tolerance = 1.0,
+      .max_time = 120,
+      .epsilon = 1.0,
+      .solver = MOPACC_SOLVER_MOPAC,
+  };
   MopacCSession *s;
   MopacCResult r1;
   MopacCResult r2;
@@ -43,12 +51,6 @@ int main(void) {
   if (!mopacc_available()) {
     return 0;
   }
-
-  p.charge = 0;
-  p.spin = 0;
-  p.model = MOPACC_MODEL_AM1;
-  p.tolerance = 1.0;
-  p.max_time = 120;
 
   s = mopacc_session_create(&p, sizeof(p));
   if (s == NULL) {
