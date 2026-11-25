@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use mopacc, please cite it as below."
+type: software
+title: "mopacc: C ABI for embedding OpenMOPAC"
+abstract: >-
+  Split rgpot engine for OpenMOPAC libmopac.so. Same shape as nwchemc and
+  cpmdc: rgpot dlopens libmopacc.so; this tree is the C ABI.
+authors:
+  - family-names: Goswami
+    given-names: Rohit
+    email: rgoswami@ieee.org
+    affiliation: "TurtleTech ehf"
+    orcid: "https://orcid.org/0000-0002-2393-8056"
+repository-code: "https://github.com/OmniPotentRPC/mopacc"
+license: MIT
+version: "0.2.0"
+date-released: "2026-11-25"
+keywords:
+  - OpenMOPAC
+  - MOPAC
+  - semiempirical
+  - AM1
+  - PM7
+  - rgpot
+  - C ABI

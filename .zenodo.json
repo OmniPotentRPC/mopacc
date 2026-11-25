@@ -1,0 +1,31 @@
+{
+  "title": "mopacc: C ABI for embedding OpenMOPAC",
+  "description": "Split rgpot engine for OpenMOPAC libmopac.so. Same shape as nwchemc and cpmdc: rgpot dlopens libmopacc.so; this tree is the C ABI.",
+  "upload_type": "software",
+  "version": "0.2.0",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Goswami, Rohit",
+      "affiliation": "TurtleTech ehf",
+      "orcid": "0000-0002-2393-8056"
+    }
+  ],
+  "keywords": [
+    "OpenMOPAC",
+    "MOPAC",
+    "semiempirical",
+    "AM1",
+    "PM7",
+    "rgpot",
+    "C ABI"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/OmniPotentRPC/mopacc",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ]
+}
