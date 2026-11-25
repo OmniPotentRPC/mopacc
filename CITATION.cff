@@ -23,3 +23,22 @@ keywords:
   - PM7
   - rgpot
   - C ABI
+references:
+  - type: article
+    authors:
+      - family-names: Moussa
+        given-names: Jonathan E.
+        orcid: "https://orcid.org/0000-0003-3701-1830"
+      - family-names: Stewart
+        given-names: James J. P.
+    title: "MOPAC: An open-source semiempirical molecular orbital program"
+    journal: "Journal of Open Source Software"
+    year: 2026
+    month: 3
+    volume: 11
+    issue: 119
+    start: 8025
+    publisher:
+      name: "The Open Journal"
+    doi: 10.21105/joss.08025
+    url: "https://doi.org/10.21105/joss.08025"
