@@ -123,6 +123,11 @@ class MesonInstallContractTest(unittest.TestCase):
         missing = [term for term in required_terms if term not in docs]
         self.assertEqual(missing, [])
 
+    def test_rgpot_guide_requires_exact_abi(self):
+        guide = RGPOT_GUIDE.read_text(encoding="utf-8")
+        self.assertIn("`mopacc_c_abi_version() == 2`", guide)
+        self.assertNotRegex(guide, r"mopacc_c_abi_version\(\)\s*>=")
+
 
 if __name__ == "__main__":
     raise SystemExit(unittest.main())

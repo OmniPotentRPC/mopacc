@@ -15,10 +15,11 @@ rgpot dlopens the installed `libmopacc.so` and calls the packed-params ABI
 directly:
 
 1. Discover the library through `MOPACC_LIBRARY` or `RGPOT_MOPACC_ENGINE`.
-2. Confirm `mopacc_available()`, `mopacc_c_abi_version() >= 2`, and that
+2. Confirm `mopacc_available()`, `mopacc_c_abi_version() == 2`, and that
    `mopacc_result_size()` / `mopacc_params_size()` equal the caller's
    `sizeof(MopacCResult)` / `sizeof(MopacCParams)`. Refuse the library
-   before any compute call otherwise.
+   before any compute call otherwise, including a newer ABI: each ABI
+   bump is a layout break, not an extension.
 3. Pass method knobs as a packed `MopacCParams` (charge, spin, model,
    COSMO epsilon, solver). Omitted blob: AM1 vacuum.
 4. Call `mopacc_energy_gradient()` for a one-shot step, or keep a
