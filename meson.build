@@ -3,6 +3,7 @@ project(
   'c',
   version: '0.1.0',
   license: 'MIT',
+  meson_version: '>=1.3.0',
   default_options: ['warning_level=2', 'c_std=c11'],
 )
 
@@ -35,10 +36,20 @@ if has_mopac
   if mopac_root == ''
     error('with_mopac requires -Dmopac_root= or MOPAC_ROOT/CONDA_PREFIX')
   endif
-  if not fs.is_file(mopac_root / 'include' / 'mopac.h')
-    error('mopac.h not found under ' + mopac_root + '/include')
+  mopac_root = meson.current_source_dir() / mopac_root
+  mopac_inc_dir = mopac_root / 'include'
+  if not fs.is_file(mopac_inc_dir / 'mopac.h')
+    error('mopac.h not found under ' + mopac_inc_dir)
   endif
-  mopac_inc = include_directories(mopac_root / 'include')
+  # include_directories() rejects absolute paths inside the source tree,
+  # which is where pixi puts $CONDA_PREFIX (.pixi/envs/mopac).
+  mopac_inc_rel = fs.relative_to(mopac_inc_dir, meson.current_source_dir())
+  mopac_inc_head = mopac_inc_rel.replace('\\', '/').split('/')[0]
+  if fs.is_absolute(mopac_inc_rel) or mopac_inc_head == '..'
+    mopac_inc = include_directories(mopac_inc_dir)
+  else
+    mopac_inc = include_directories(mopac_inc_rel)
+  endif
   mopac_lib = cc.find_library(
     'mopac',
     dirs: [mopac_root / 'lib', mopac_root / 'lib64'],
