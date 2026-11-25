@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MESON = ROOT / "meson.build"
+HEADER = ROOT / "include" / "mopacc.h"
 README = ROOT / "README.md"
 RGPOT_GUIDE = ROOT / "docs" / "rgpot-integration.md"
 PIXI = ROOT / "pixi.toml"
@@ -15,6 +16,7 @@ PACKAGING_TESTS = [
     "readme-abi-surface",
     "meson-install-contract",
     "mopacc-installed-pkgconfig-consumer",
+    "mopac-root-relative-configure",
 ]
 
 
@@ -77,6 +79,7 @@ class MesonInstallContractTest(unittest.TestCase):
         self.assertIn("tests/test_installed_pkgconfig_consumer.py", self.text)
         self.assertIn("tests/test_readme_abi_surface.py", self.text)
         self.assertIn("tests/test_meson_install_contract.py", self.text)
+        self.assertIn("tests/test_relative_mopac_root.py", self.text)
 
     def test_installed_pkgconfig_consumer_exercises_rgpot_surface(self):
         consumer = CONSUMER.read_text(encoding="utf-8")
@@ -141,6 +144,20 @@ class MesonInstallContractTest(unittest.TestCase):
         guide = RGPOT_GUIDE.read_text(encoding="utf-8")
         self.assertIn("`mopacc_c_abi_version() == 2`", guide)
         self.assertNotRegex(guide, r"mopacc_c_abi_version\(\)\s*>=")
+
+    def test_rgpot_guide_params_example_sets_every_field(self):
+        header = HEADER.read_text(encoding="utf-8")
+        struct = re.search(
+            r"typedef struct MopacCParams \{(.*?)\} MopacCParams;", header, re.S
+        )
+        self.assertIsNotNone(struct)
+        body = re.sub(r"/\*.*?\*/", "", struct.group(1), flags=re.S)
+        fields = re.findall(r"(\w+)\s*;", body)
+        guide = RGPOT_GUIDE.read_text(encoding="utf-8")
+        example = re.search(r"MopacCParams params = \{(.*?)\};", guide, re.S)
+        self.assertIsNotNone(example)
+        initialised = re.findall(r"\.(\w+)\s*=", example.group(1))
+        self.assertEqual(initialised, fields)
 
 
 if __name__ == "__main__":

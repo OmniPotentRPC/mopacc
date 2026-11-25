@@ -36,7 +36,18 @@ if has_mopac
   if mopac_root == ''
     error('with_mopac requires -Dmopac_root= or MOPAC_ROOT/CONDA_PREFIX')
   endif
-  mopac_root = meson.current_source_dir() / mopac_root
+  # Relative prefixes are taken from the source root. Collapse '..' so
+  # fs.relative_to() and include_directories() see where the prefix
+  # really is, not a path that merely starts inside the source tree.
+  mopac_root = run_command(
+    python,
+    '-c',
+    'import os, sys; sys.stdout.write(os.path.normpath(os.path.join(*sys.argv[1:])))',
+    meson.current_source_dir(),
+    mopac_root,
+    check: true,
+  ).stdout()
+  summary('mopac_root', mopac_root, section: 'OpenMOPAC')
   mopac_inc_dir = mopac_root / 'include'
   if not fs.is_file(mopac_inc_dir / 'mopac.h')
     error('mopac.h not found under ' + mopac_inc_dir)
@@ -166,6 +177,23 @@ if get_option('with_tests')
       ],
       is_parallel: false,
       timeout: 240,
+      suite: ['packaging'],
+    )
+  endif
+  if meson_prog.found()
+    test(
+      'mopac-root-relative-configure',
+      python,
+      args: [
+        meson.current_source_dir() / 'tests/test_relative_mopac_root.py',
+        '--source-dir',
+        meson.current_source_dir(),
+        '--meson',
+        meson_prog.full_path(),
+        '--cc',
+        cc.cmd_array().length() > 1 ? cc.cmd_array()[1] : cc.cmd_array()[0],
+      ],
+      timeout: 120,
       suite: ['packaging'],
     )
   endif
