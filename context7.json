@@ -1,0 +1,20 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "mopacc",
+  "description": "OpenMOPAC C ABI split engine for rgpot.",
+  "folders": [
+    "docs",
+    "examples",
+    "include"
+  ],
+  "excludeFolders": [
+    "tests",
+    "scripts"
+  ],
+  "excludeFiles": [
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+    "LICENSE"
+  ],
+  "rules": []
+}
