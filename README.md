@@ -117,6 +117,11 @@ meson compile -C build-mopac
 ./build-mopac/host_hcn_am1
 ```
 
+`-Dmopac_root` (or `MOPAC_ROOT` when the option is empty) may be absolute
+or relative. A relative prefix is resolved against the source root, not the
+build directory or the shell's working directory, and `..` is collapsed, so
+`-Dmopac_root=../mopac-env` names a sibling of the checkout.
+
 Or `pixi run -e mopac test-mopac`.
 
 Env: `MOPACC_LIBRARY` / `RGPOT_MOPACC_ENGINE` once an rgpot frontend

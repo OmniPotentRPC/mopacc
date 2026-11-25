@@ -15,6 +15,7 @@ PACKAGING_TESTS = [
     "readme-abi-surface",
     "meson-install-contract",
     "mopacc-installed-pkgconfig-consumer",
+    "mopac-root-relative-configure",
 ]
 
 
@@ -77,6 +78,7 @@ class MesonInstallContractTest(unittest.TestCase):
         self.assertIn("tests/test_installed_pkgconfig_consumer.py", self.text)
         self.assertIn("tests/test_readme_abi_surface.py", self.text)
         self.assertIn("tests/test_meson_install_contract.py", self.text)
+        self.assertIn("tests/test_relative_mopac_root.py", self.text)
 
     def test_installed_pkgconfig_consumer_exercises_rgpot_surface(self):
         consumer = CONSUMER.read_text(encoding="utf-8")
