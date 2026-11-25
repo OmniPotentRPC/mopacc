@@ -57,6 +57,8 @@ MopacCParams params = {
     .model = MOPACC_MODEL_AM1, /* 4 */
     .tolerance = 1.0,
     .max_time = 3600,
+    .epsilon = 1.0, /* vacuum */
+    .solver = MOPACC_SOLVER_MOPAC,
 };
 
 MopacCSession *session = mopacc_session_create(&params, sizeof(params));
